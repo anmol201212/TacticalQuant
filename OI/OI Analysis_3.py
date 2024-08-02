@@ -93,18 +93,18 @@ for i in range(0,3):
     main_df = pd.concat([temp_df2, temp_df1], ignore_index=False)
 
     # Save the updated DataFrame to a CSV file
-    main_df.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-'+products[i]+'.csv', index=False)
+    main_df.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv', index=False)
 
 
 
-df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Lean Hog.csv')
+df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Lean Hog.csv')
 df1.drop_duplicates(subset='Date', keep='last', inplace=True)
-df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Feeder Cattle.csv')
+df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Feeder Cattle.csv')
 df2.drop_duplicates(subset='Date', keep='last', inplace=True)
-df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Live Cattle.csv')
+df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Live Cattle.csv')
 df3.drop_duplicates(subset='Date', keep='last', inplace=True)
 
-file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-3.xlsx'
+file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-3.xlsx'
 
 wb = Workbook()
 

@@ -89,28 +89,28 @@ for i in range(0,6):
     temp_df1 = data_transform(df,date_text)
     # temp_df1.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-'+products[i]+'.csv', index=False)
 
-    temp_df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-'+products[i]+'.csv')
+    temp_df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv')
     main_df = pd.concat([temp_df2, temp_df1], ignore_index=True)
 
     # Save the updated DataFrame to a CSV file
-    main_df.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-'+products[i]+'.csv', index=False)
+    main_df.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv', index=False)
 
 
 
-df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Corn.csv')
+df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Corn.csv')
 df1.drop_duplicates(subset='Date', keep='last', inplace=True)
-df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-HRW.csv')
+df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-HRW.csv')
 df2.drop_duplicates(subset='Date', keep='last', inplace=True)
-df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Soybean.csv')
+df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soybean.csv')
 df3.drop_duplicates(subset='Date', keep='last', inplace=True)
-df4 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Soymeal.csv')
+df4 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soymeal.csv')
 df4.drop_duplicates(subset='Date', keep='last', inplace=True)
-df5 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-Soyoil.csv')
+df5 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soyoil.csv')
 df5.drop_duplicates(subset='Date', keep='last', inplace=True)
-df6 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-SRW.csv')
+df6 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-SRW.csv')
 df6.drop_duplicates(subset='Date', keep='last', inplace=True)
 
-file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data.xlsx'
+file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data.xlsx'
 
 wb = Workbook()
 
@@ -124,3 +124,4 @@ with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
     df4.to_excel(writer, sheet_name='Soymeal', index=False)
     df5.to_excel(writer, sheet_name='Soyoil', index=False)
     df6.to_excel(writer, sheet_name='SRW', index=False)
+    

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@5.17.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300, "strokeWidth": 0}}, "layer": [{"mark": {"type": "arc", "innerRadius": 0, "outerRadius": 120}, "encoding": {"color": {"field": "Oilseed", "legend": null, "type": "nominal"}, "theta": {"field": "Consumption_Avg", "type": "quantitative"}, "tooltip": [{"field": "Oilseed", "type": "nominal"}, {"field": "Consumption_Avg", "type": "quantitative"}]}, "name": "view_1"}, {"mark": {"type": "text", "fill": "black", "radius": 125}, "encoding": {"color": {"field": "Oilseed", "legend": null, "type": "nominal"}, "text": {"field": "Consumption_Avg", "format": ".1f", "type": "quantitative"}, "theta": {"field": "Consumption_Avg", "type": "quantitative"}, "tooltip": [{"field": "Oilseed", "type": "nominal"}, {"field": "Consumption_Avg", "type": "quantitative"}]}}, {"mark": {"type": "text", "fill": "black", "radius": 140}, "encoding": {"color": {"field": "Oilseed", "legend": null, "type": "nominal"}, "text": {"field": "Oilseed", "type": "nominal"}, "theta": {"field": "Consumption_Avg", "type": "quantitative"}, "tooltip": [{"field": "Oilseed", "type": "nominal"}, {"field": "Consumption_Avg", "type": "quantitative"}]}}], "data": {"name": "data-9417a9ba2daa55307fd3ebf473543520"}, "params": [{"name": "param_1", "select": {"type": "interval", "encodings": ["x", "y"]}, "bind": "scales", "views": ["view_1"]}], "resolve": {"scale": {"theta": "independent"}}, "title": "World Oilseed Consumption Percentage", "$schema": "https://vega.github.io/schema/vega-lite/v5.17.0.json", "datasets": {"data-9417a9ba2daa55307fd3ebf473543520": [{"Oilseed": "Soybean", "Estimated World Consumption": "380 - 400", "Consumption_Avg": 390.0}, {"Oilseed": "Rapeseed", "Estimated World Consumption": "70 - 75", "Consumption_Avg": 72.5}, {"Oilseed": "Sunflower seed", "Estimated World Consumption": "50 - 55", "Consumption_Avg": 52.5}, {"Oilseed": "Peanut (Groundnut)", "Estimated World Consumption": "45 - 50", "Consumption_Avg": 47.5}, {"Oilseed": "Cottonseed", "Estimated World Consumption": "40 - 45", "Consumption_Avg": 42.5}, {"Oilseed": "Palm kernel", "Estimated World Consumption": "15 - 20", "Consumption_Avg": 17.5}, {"Oilseed": "Copra (Coconut)", "Estimated World Consumption": "6 - 8", "Consumption_Avg": 7.0}, {"Oilseed": "Palm", "Estimated World Consumption": "77 - 78", "Consumption_Avg": 77.5}, {"Oilseed": "Olive", "Estimated World Consumption": "3 - 3.5", "Consumption_Avg": 3.25}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>
