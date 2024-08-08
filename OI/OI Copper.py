@@ -5,7 +5,6 @@ from selenium.webdriver.common.by import By
 import pandas as pd
 from bs4 import BeautifulSoup
 from openpyxl import Workbook
-import time
 
 def Get_data(url):  
     # Set options for Microsoft Edge
@@ -23,7 +22,6 @@ def Get_data(url):
     # url = 'https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.volume.html'
     driver.get(url)
 
-    time.sleep(10)
     html_source = driver.page_source
 
     soup = BeautifulSoup(html_source, 'html.parser')
@@ -33,16 +31,10 @@ def Get_data(url):
 
     # Check if there are enough tables
     if len(tables) > 1:
-        table1 = tables[0].find('table')  # Select the first table
-        table2 = tables[1].find('table')  # Select the second table
+        table = tables[1].find('table')  # Select the second table
     else:
-        raise ValueError("Not enough tables found on the page.")
+        raise ValueError("The second table is not found on the page.")
 
-
-    td_elements = table1.find_all('td')
-
-    # Extract the text from each <td> element and remove commas
-    values = [int(td.get_text().replace(',', '')) for td in td_elements]
 
     label_element = driver.find_element(By.XPATH, '//label[text()="Trade Date"]')
 
@@ -54,7 +46,7 @@ def Get_data(url):
 
     # Extract table headers
     headers = []
-    header_rows = table2.find_all('thead')
+    header_rows = table.find_all('thead')
     for header_row in header_rows:
         cols = header_row.find_all('th')
         for col in cols:
@@ -63,7 +55,7 @@ def Get_data(url):
 
     # Extract table rows
     rows = []
-    for row in table2.find_all('tbody')[0].find_all('tr'):
+    for row in table.find_all('tbody')[0].find_all('tr'):
         cols = row.find_all('td')
         if len(cols) > 0:
             cols = [ele.get_text().strip() for ele in cols]
@@ -73,7 +65,7 @@ def Get_data(url):
     df = pd.DataFrame(rows, columns=headers[:len(rows[0])])
     driver.quit()
 
-    return df,date_text,values[-2:]
+    return df,date_text
 
 
 def data_transform(df,date_text):
@@ -90,13 +82,11 @@ def data_transform(df,date_text):
 
 
 
-links = ['https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-meal.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-oil.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-oil.volume.html','https://www.cmegroup.com/markets/agriculture/grains/wheat.volume.html','https://www.cmegroup.com/markets/agriculture/grains/wheat.volume.html']
-products = ['Soybean','Soymeal','Soyoil','Corn','SRW','HRW']
-for i in range(0,6):
-    df,date_text,values = Get_data(links[i])
+links = ['https://www.cmegroup.com/markets/metals/base/copper.volume.html']
+products = ['HG']
+for i in range(0,1):
+    df,date_text = Get_data(links[i])
     temp_df1 = data_transform(df,date_text)
-    temp_df1['Market Open Interest'] = values[0]
-    temp_df1['Change in OI'] = values[1]
     # temp_df1.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\code\OI\OI Data-'+products[i]+'.csv', index=False)
 
     temp_df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv')
@@ -107,18 +97,9 @@ for i in range(0,6):
 
 
 
-df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Corn.csv')
+df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-HG.csv')
 df1.drop_duplicates(subset='Date', keep='last', inplace=True)
-df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-HRW.csv')
-df2.drop_duplicates(subset='Date', keep='last', inplace=True)
-df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soybean.csv')
-df3.drop_duplicates(subset='Date', keep='last', inplace=True)
-df4 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soymeal.csv')
-df4.drop_duplicates(subset='Date', keep='last', inplace=True)
-df5 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soyoil.csv')
-df5.drop_duplicates(subset='Date', keep='last', inplace=True)
-df6 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-SRW.csv')
-df6.drop_duplicates(subset='Date', keep='last', inplace=True)
+
 
 file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data.xlsx'
 
@@ -128,10 +109,6 @@ wb.save(file_path)
 
 # Save dataframes to different sheets in the cleared Excel file
 with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
-    df1.to_excel(writer, sheet_name='Corn', index=False)
-    df2.to_excel(writer, sheet_name='HRW', index=False)
-    df3.to_excel(writer, sheet_name='Soybean', index=False)
-    df4.to_excel(writer, sheet_name='Soymeal', index=False)
-    df5.to_excel(writer, sheet_name='Soyoil', index=False)
-    df6.to_excel(writer, sheet_name='SRW', index=False)
+    df1.to_excel(writer, sheet_name='HG', index=False)
+    
     
