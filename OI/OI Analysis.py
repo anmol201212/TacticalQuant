@@ -4,7 +4,7 @@ from selenium.webdriver.edge.options import Options
 from selenium.webdriver.common.by import By
 import pandas as pd
 from bs4 import BeautifulSoup
-from openpyxl import Workbook
+from openpyxl import Workbook,load_workbook
 import time
 
 def Get_data(url):  
@@ -90,7 +90,7 @@ def data_transform(df,date_text):
 
 
 
-links = ['https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-meal.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-oil.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-oil.volume.html','https://www.cmegroup.com/markets/agriculture/grains/wheat.volume.html','https://www.cmegroup.com/markets/agriculture/grains/wheat.volume.html']
+links = ['https://www.cmegroup.com/markets/agriculture/oilseeds/soybean.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-meal.volume.html','https://www.cmegroup.com/markets/agriculture/oilseeds/soybean-oil.volume.html','https://www.cmegroup.com/markets/agriculture/grains/corn.volume.html','https://www.cmegroup.com/markets/agriculture/grains/wheat.volume.html','https://www.cmegroup.com/markets/agriculture/grains/kc-wheat.volume.html']
 products = ['Soybean','Soymeal','Soyoil','Corn','SRW','HRW']
 for i in range(0,6):
     df,date_text,values = Get_data(links[i])
@@ -122,16 +122,29 @@ df6.drop_duplicates(subset='Date', keep='last', inplace=True)
 
 file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data.xlsx'
 
-wb = Workbook()
+# wb = Workbook()
 
-wb.save(file_path)
+# wb.save(file_path)
 
-# Save dataframes to different sheets in the cleared Excel file
-with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
+# # Save dataframes to different sheets in the cleared Excel file
+# with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
+#     df1.to_excel(writer, sheet_name='Corn', index=False)
+#     df2.to_excel(writer, sheet_name='HRW', index=False)
+#     df3.to_excel(writer, sheet_name='Soybean', index=False)
+#     df4.to_excel(writer, sheet_name='Soymeal', index=False)
+#     df5.to_excel(writer, sheet_name='Soyoil', index=False)
+#     df6.to_excel(writer, sheet_name='SRW', index=False)
+
+wb = load_workbook(file_path)
+
+# Save dataframes to different sheets in the existing Excel file
+with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
     df1.to_excel(writer, sheet_name='Corn', index=False)
     df2.to_excel(writer, sheet_name='HRW', index=False)
     df3.to_excel(writer, sheet_name='Soybean', index=False)
     df4.to_excel(writer, sheet_name='Soymeal', index=False)
     df5.to_excel(writer, sheet_name='Soyoil', index=False)
     df6.to_excel(writer, sheet_name='SRW', index=False)
-    
+
+# Save the workbook after modifications
+wb.save(file_path)
