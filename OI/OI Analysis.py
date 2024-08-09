@@ -82,11 +82,22 @@ def data_transform(df,date_text):
     df['Open Interest'] = df['Open Interest'].str.replace(',', '').astype(int)
     df['Open Interest'] = df['Open Interest'].astype(int)
     df_new = df.T
-    df_new = df_new.astype(str)
+    # df_new = df_new.astype(str)
     df_new.columns = df_new.iloc[0]
     df_new = df_new.drop(df_new.index[0])
     df_new.insert(0,'Date',date_text.split(', ')[1] )
+    df_new.iloc[:,1:] = df_new.iloc[:,1:].apply(pd.to_numeric, errors='coerce')
     return df_new
+
+def final_touch(main_df):
+    main_df.drop_duplicates(subset='Date', keep='first', inplace=True)
+    main_df = main_df.astype(str).replace(',', '', regex=True)
+
+    # Convert all columns except the first one to integers
+    main_df.iloc[:, 1:] = main_df.iloc[:, 1:].astype(int)
+
+    # Check the data types of the columns
+    return main_df
 
 def cme_update():
         
@@ -102,7 +113,7 @@ def cme_update():
         temp_df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv')
         main_df = pd.concat([temp_df1,temp_df2], ignore_index=True)
         # main_df.iloc[:, 1:] = main_df.iloc[:, 1:].astype(int)
-        main_df = main_df.iloc[:,1:].apply(pd.to_numeric, errors='coerce')
+        # main_df = main_df.iloc[:,1:].apply(pd.to_numeric, errors='coerce')
 
         # Save the updated DataFrame to a CSV file
         main_df.to_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-'+products[i]+'.csv', index=False)
@@ -110,34 +121,26 @@ def cme_update():
 
 
     df1 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Corn.csv')
-    df1.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df1.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df1 = final_touch(df1)
     df2 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-HRW.csv')
-    df2.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df2.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df2 = final_touch(df2)
     df3 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soybean.csv')
-    df3.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df3.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df3 = final_touch(df3)
     df4 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soymeal.csv')
-    df4.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df4.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df4 = final_touch(df4)
     df5 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-Soyoil.csv')
-    df5.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df5.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df5 = final_touch(df5)
     df6 = pd.read_csv(r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data-SRW.csv')
-    df6.drop_duplicates(subset='Date', keep='first', inplace=True)
+    # df6.drop_duplicates(subset='Date', keep='first', inplace=True)
+    df6 = final_touch(df6)
 
     file_path = r'\\corp.hertshtengroup.com\Users\India\Data\anmol.chopra\Documents\FF Codes\Futures-First\OI\OI Data.xlsx'
 
-    # wb = Workbook()
-
-    # wb.save(file_path)
-
-    # # Save dataframes to different sheets in the cleared Excel file
-    # with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
-    #     df1.to_excel(writer, sheet_name='Corn', index=False)
-    #     df2.to_excel(writer, sheet_name='HRW', index=False)
-    #     df3.to_excel(writer, sheet_name='Soybean', index=False)
-    #     df4.to_excel(writer, sheet_name='Soymeal', index=False)
-    #     df5.to_excel(writer, sheet_name='Soyoil', index=False)
-    #     df6.to_excel(writer, sheet_name='SRW', index=False)
-
-    # wb = load_workbook(file_path)
 
     # Save dataframes to different sheets in the existing Excel file
     with pd.ExcelWriter(file_path, engine='openpyxl', mode='a', if_sheet_exists='replace') as writer:
